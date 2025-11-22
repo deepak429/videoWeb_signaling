@@ -81,6 +81,13 @@ io.on('connection', (socket) => {
     socket.to(roomId).emit('start_customer_stream');
   });
 
+  // Relays a request from the agent to the customer to swap their camera.
+  socket.on('swap_camera_request', (data) => {
+    const { roomId } = data;
+    console.log(`Agent requested camera swap in room ${roomId}`);
+    socket.to(roomId).emit('swap_camera_request');
+  });
+
   // Relays call status changes (e.g., complete, failed, exited).
   socket.on('call_status', (data) => {
     const { roomId, status } = data;
@@ -110,6 +117,6 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(3005, () => {
-  console.log("✅ Signaling server running at http://localhost:8080");
+server.listen(3001, () => {
+  console.log("✅ Signaling server running at http://localhost:3001");
 });
